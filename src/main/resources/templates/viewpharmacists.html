@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <title>View Pharmacist</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Pharmacists List</h1>
+    <div th:switch="${pharmacist}">
+        <h2 th:case="null">No pharmacists available</h2>
+        <div th:case="*">
+            <table class="table table-success table-striped table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Pharmacist ID</th>
+                    <th scope="col">Pharmacist Name</th>
+                    <th scope="col">Pharmacist Username</th>
+                    <th scope="col">Edit Pharmacist</th>
+                    <th scope="col">Delete Pharmacist</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pharmacist : ${pharmacist}">
+                        <td th:text="${pharmacist.pID}"></td>
+                        <td th:text="${pharmacist.pName}"></td>
+                        <td th:text="${pharmacist.pUName}"></td>
+                        <td><a th:href="@{/showUpdatePharmacist/{id} (id=${pharmacist.pID})}"><i class="bi bi-pencil-square"></i></a></td>
+                        <td><a th:href="@{/deletePharmacist/{id} (id=${pharmacist.pID})}"><i class="bi bi-trash-fill" style="color:red"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="btn btn-success" onclick="location.href='/showAddPharmacistForm'" type="button">Add New Pharmacist</button>
+    </div>
+</div>
+</body>
+</html>
