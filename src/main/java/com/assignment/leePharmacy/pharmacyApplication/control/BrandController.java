@@ -31,4 +31,9 @@ public class BrandController {
     public void deleteBrand(@PathVariable Integer id){
         brandService.deleteBrand(id);
     }
+
+    @RequestMapping("/getallByName")
+    public List<Brand> getAllCategoryNames(){
+        return brandService.getAllCategoryNames();
+    }
 }

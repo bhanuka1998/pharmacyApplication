@@ -16,6 +16,16 @@ public class Brand {
     @Column(name = "cat_id", nullable = false)
     private Integer catID;
 
+    private String catName;
+
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
+    }
+
     public Integer getBrandID() {
         return brandID;
     }

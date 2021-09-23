@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BrandServiceImpl implements BrandService{
@@ -26,13 +27,31 @@ public class BrandServiceImpl implements BrandService{
     }
 
     @Override
-    public void updateBrand(Brand brand, Integer id) {
-        brand.setBrandID(id);
-        brandRepository.save(brand);
+    public Optional<Brand> updateBrand(Brand brand, Integer id) {
+        return brandRepository.findById(id).map(e -> {
+            e.setBrandName(brand.getBrandName());
+            return e;
+        });
     }
 
     @Override
     public void deleteBrand(Integer id) {
         brandRepository.deleteById(id);
+    }
+
+    @Override
+    public Brand getBrandById(Integer id) {
+        Optional<Brand> brd = Optional.ofNullable(
+                brandRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID"))
+        );
+        Brand brand = brd.get();
+        return brand;
+    }
+
+    @Override
+    public List<Brand> getAllCategoryNames() {
+        List<Brand> brandList = new ArrayList<>();
+        brandRepository.findByAll().forEach(brandList::add);
+        return brandList;
     }
 }
