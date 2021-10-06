@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "brand")
 public class Brand {
+
     @Id
     @Column(name = "brand_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,18 +14,9 @@ public class Brand {
     @Column(name = "brand_name", length = 45, nullable = false)
     private String brandName;
 
-    @Column(name = "cat_id", nullable = false)
-    private Integer catID;
-
-    private String catName;
-
-    public String getCatName() {
-        return catName;
-    }
-
-    public void setCatName(String catName) {
-        this.catName = catName;
-    }
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id", referencedColumnName = "cat_id")
+    private Category category;
 
     public Integer getBrandID() {
         return brandID;
@@ -42,11 +34,11 @@ public class Brand {
         this.brandName = brandName;
     }
 
-    public Integer getCatID() {
-        return catID;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCatID(Integer catID) {
-        this.catID = catID;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

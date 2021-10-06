@@ -1,9 +1,9 @@
 package com.assignment.leePharmacy.pharmacyApplication.web;
 
 import com.assignment.leePharmacy.pharmacyApplication.model.Brand;
-import com.assignment.leePharmacy.pharmacyApplication.model.Pharmacist;
-import com.assignment.leePharmacy.pharmacyApplication.repository.BrandRepository;
+import com.assignment.leePharmacy.pharmacyApplication.model.Category;
 import com.assignment.leePharmacy.pharmacyApplication.service.BrandService;
+import com.assignment.leePharmacy.pharmacyApplication.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class BrandWebController {
     private BrandService brandService;
 
     @Autowired
-    private BrandRepository brandRepository;
+    private CategoryService categoryService;
 
     @GetMapping("/viewBrands")
     public String getAllBrands(Model model){
@@ -30,10 +30,25 @@ public class BrandWebController {
         return "viewbrands";
     }
 
+    @GetMapping("/showAddBrandForm")
+    public String showAddBrandForm(Brand brand, Model model){
+        model.addAttribute("category", categoryService.getAllCategories());
+        return "addbrand";
+    }
+
+    @PostMapping("/addNewBrand")
+    public String addNewBrand(@Valid Brand brand, BindingResult result, Model model){
+        if(result.hasErrors()){
+            return  "addbrand";
+        }
+        brandService.saveBrand(brand);
+        return "redirect:/viewBrands";
+    }
+
     @GetMapping("/showUpdateBrand/{id}")
     public String showEditBrandForm(@PathVariable("id") Integer id, Model model){
-        model.addAttribute("pharmacist", brandService.getBrandById(id));
-        return "editbrand";
+        model.addAttribute("brand", brandService.getBrandById(id));
+        return "editbrands";
     }
 
     @PostMapping("/updateBrand/{id}")
@@ -41,16 +56,16 @@ public class BrandWebController {
         if(result.hasErrors()){
             brand.setBrandID(id);
             model.addAttribute("brand", brand);
-            return "editpharmacist";
+            return "editbrands";
         }
         Optional<Brand> brand1 = brandService.updateBrand(brand, id);
-        return "redirect:/viewPharmacist";
+        return "redirect:/viewBrands";
     }
 
     @GetMapping("/deleteBrand/{id}")
     public String deletePharmacist(@PathVariable ("id") Integer id, Model model) {
         brandService.deleteBrand(id);
-        return "redirect:/viewPharmacist";
+        return "redirect:/viewBrands";
     }
 
 

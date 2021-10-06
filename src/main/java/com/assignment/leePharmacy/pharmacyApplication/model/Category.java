@@ -1,10 +1,14 @@
 package com.assignment.leePharmacy.pharmacyApplication.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
 public class Category {
+
     @Id
     @Column(name = "cat_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,8 +16,6 @@ public class Category {
 
     @Column(name = "cat_name", length = 60, nullable = false)
     private String cat_name;
-
-
 
     public Integer getCat_id() {
         return cat_id;

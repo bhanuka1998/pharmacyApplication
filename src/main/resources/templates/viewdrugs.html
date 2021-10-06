@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="assets/css/demo_1/style.css">
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
-    <title>View Categories</title>
+    <title>View Drugs</title>
 </head>
 <body>
 <div class="container-scroller">
@@ -286,32 +286,40 @@
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="container-fluid">
-                    <h1>Brand List</h1>
-                    <div th:switch="${brand}">
-                        <h2 th:case="null">No brands available</h2>
+                    <h1>Drug List</h1>
+                    <div th:switch="${drug}">
+                        <h2 th:case="null">No drugs available</h2>
                         <div th:case="*" class="table-responsive">
                             <table class="table table-success table-striped table-hover" id="dataTable">
                                 <thead>
                                 <tr>
-                                    <th scope="col">Brand ID</th>
+                                    <th scope="col">Drug ID</th>
                                     <th scope="col">Brand Name</th>
+                                    <th scope="col">Drug Name</th>
                                     <th scope="col">Category Name</th>
+                                    <th scope="col">Rack No</th>
+                                    <th scope="col">Full Quantity</th>
+                                    <th scope="col">Price</th>
                                     <th scope="col">Edit Brand</th>
                                     <th scope="col">Delete Brand</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="brand : ${brand}">
-                                    <td th:text="${brand.brandID}"></td>
-                                    <td th:text="${brand.brandName}"></td>
-                                    <td th:text="${brand.catName}"></td>
-                                    <td><a th:href="@{/showUpdateBrand/{id} (id=${brand.brandID})}"><i class="bi bi-pencil-square"></i></a></td>
-                                    <td><a th:href="@{/deleteBrand/{id} (id=${brand.brandID})}"><i class="bi bi-trash-fill" style="color:red"></i></a></td>
+                                <tr th:each="drug : ${drug}">
+                                    <td th:text="${drug.drugID}"></td>
+                                    <td th:text="${drug.brandName}"></td>
+                                    <td th:text="${drug.drugName}"></td>
+                                    <td th:text="${drug.catName}"></td>
+                                    <td style="text-align:center" th:text="${drug.rackNo}"></td>
+                                    <td style="text-align:center" th:text="${drug.fullQty}"></td>
+                                    <td style="text-align:center" th:text="${drug.price}"></td>
+                                    <td style="text-align:center"><a th:href="@{/showUpdateDrug/{id} (id=${drug.drugID})}"><i class="bi bi-pencil-square"></i></a></td>
+                                    <td style="text-align:center"><a th:href="@{/deleteDrug/{id} (id=${drug.drugID})}"><i class="bi bi-trash-fill" style="color:red"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button class="btn btn-success" onclick="location.href='/showAddBrandForm'" type="button">Add New Brand</button>
+                        <button class="btn btn-success" onclick="location.href='/showAddDrugForm'" type="button">Add New Drug</button>
                     </div>
                 </div>
             </div>

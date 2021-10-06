@@ -11,26 +11,38 @@ public class Drugs {
     @Column(name = "drug_id")
     private Integer drugID;
 
-    @Column(name = "brand_id", nullable = false)
-    private Integer brandID;
+    @OneToOne(targetEntity = Brand.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
+    private Brand brand;
 
-    @Column(name = "cat_id", nullable = false)
-    private Integer catID;
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id", referencedColumnName = "cat_id")
+    private Category category;
 
-    @Column(name = "rack_no", nullable = false)
-    private Integer rackNo;
+    @OneToOne(targetEntity = Rack.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "rack_no", referencedColumnName = "rack_no")
+    private Rack rack;
+
+    @OneToOne(targetEntity = Supplier.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sup_id", referencedColumnName = "sup_id")
+    private Supplier supplier;
 
     @Column(name = "drug_name", nullable = false)
     private String drugName;
-
-    @Column(name = "sup_id", nullable = false)
-    private Integer supID;
 
     @Column(name = "full_qty", nullable = false)
     private  Integer fullQty;
 
     @Column(name = "price", nullable = false)
     private Float price;
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     public Integer getDrugID() {
         return drugID;
@@ -40,28 +52,28 @@ public class Drugs {
         this.drugID = drugID;
     }
 
-    public Integer getBrandID() {
-        return brandID;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setBrandID(Integer brandID) {
-        this.brandID = brandID;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
-    public Integer getCatID() {
-        return catID;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCatID(Integer catID) {
-        this.catID = catID;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public Integer getRackNo() {
-        return rackNo;
+    public Rack getRack() {
+        return rack;
     }
 
-    public void setRackNo(Integer rackNo) {
-        this.rackNo = rackNo;
+    public void setRack(Rack rack) {
+        this.rack = rack;
     }
 
     public String getDrugName() {
@@ -70,14 +82,6 @@ public class Drugs {
 
     public void setDrugName(String drugName) {
         this.drugName = drugName;
-    }
-
-    public Integer getSupID() {
-        return supID;
-    }
-
-    public void setSupID(Integer supID) {
-        this.supID = supID;
     }
 
     public Integer getFullQty() {

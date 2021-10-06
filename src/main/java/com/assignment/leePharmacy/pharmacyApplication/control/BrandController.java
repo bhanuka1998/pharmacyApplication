@@ -1,5 +1,6 @@
 package com.assignment.leePharmacy.pharmacyApplication.control;
 
+import com.assignment.leePharmacy.pharmacyApplication.dto.BrandCatDTO;
 import com.assignment.leePharmacy.pharmacyApplication.model.Brand;
 import com.assignment.leePharmacy.pharmacyApplication.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class BrandController {
         brandService.deleteBrand(id);
     }
 
-    @RequestMapping("/getallByName")
-    public List<Brand> getAllCategoryNames(){
+    @GetMapping("/getAllByName")
+    public List<BrandCatDTO> getAllCategoryNames(){
         return brandService.getAllCategoryNames();
     }
 }

@@ -1,5 +1,6 @@
 package com.assignment.leePharmacy.pharmacyApplication.service;
 
+import com.assignment.leePharmacy.pharmacyApplication.dto.BrandCatDTO;
 import com.assignment.leePharmacy.pharmacyApplication.model.Brand;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface BrandService {
 
     Brand getBrandById(Integer id);
 
-    List<Brand> getAllCategoryNames();
+    List<BrandCatDTO> getAllCategoryNames();
 }

@@ -20,6 +20,7 @@ public class CategoryWebController {
     @Autowired
     CategoryService categoryService;
 
+
     @GetMapping("/viewCategories")
     public String viewCategories(Model model){
         model.addAttribute("category", categoryService.getAllCategories());

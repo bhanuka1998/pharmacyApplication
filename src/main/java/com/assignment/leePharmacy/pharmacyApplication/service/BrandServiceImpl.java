@@ -1,10 +1,12 @@
 package com.assignment.leePharmacy.pharmacyApplication.service;
 
+import com.assignment.leePharmacy.pharmacyApplication.dto.BrandCatDTO;
 import com.assignment.leePharmacy.pharmacyApplication.model.Brand;
 import com.assignment.leePharmacy.pharmacyApplication.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class BrandServiceImpl implements BrandService{
     }
 
     @Override
+    @Transactional
     public Optional<Brand> updateBrand(Brand brand, Integer id) {
         return brandRepository.findById(id).map(e -> {
             e.setBrandName(brand.getBrandName());
@@ -49,9 +52,9 @@ public class BrandServiceImpl implements BrandService{
     }
 
     @Override
-    public List<Brand> getAllCategoryNames() {
-        List<Brand> brandList = new ArrayList<>();
-        brandRepository.findByAll().forEach(brandList::add);
+    public List<BrandCatDTO> getAllCategoryNames() {
+        List<BrandCatDTO> brandList = new ArrayList<BrandCatDTO>();
+        brandRepository.getAllBrandByCategory().forEach(brandList::add);
         return brandList;
     }
 }
