@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Controller
 public class CategoryWebController {
-
     @Autowired
     CategoryService categoryService;
 

@@ -1,31 +1,25 @@
-package com.assignment.leePharmacy.pharmacyApplication.model;
+package com.assignment.leePharmacy.pharmacyApplication.dto;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "stock")
-public class Stock {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "stock_id")
+public class StockDrugDTO {
     private Integer stockID;
-
-    @OneToOne(targetEntity = Drugs.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_id", referencedColumnName = "drug_id")
-    private Drugs drugs;
-
-    @Column(name = "mf_date", nullable = false)
+    private Integer drugID;
+    private String drugName;
     private String mfDate;
-
-    @Column(name = "exp_date", nullable = false)
     private String expDate;
-
-    @Column(name = "qty", nullable = false)
-    private  Integer qty;
-
-    @Column(name =  "rcvd_date", nullable = false)
+    private Integer qty;
     private String rcvdDate;
+
+    public StockDrugDTO(Integer stockID, Integer drugID, String drugName, String mfDate, String expDate, Integer qty, String rcvdDate) {
+        this.stockID = stockID;
+        this.drugID = drugID;
+        this.drugName = drugName;
+        this.mfDate = mfDate;
+        this.expDate = expDate;
+        this.qty = qty;
+        this.rcvdDate = rcvdDate;
+    }
 
     public Integer getStockID() {
         return stockID;
@@ -35,12 +29,20 @@ public class Stock {
         this.stockID = stockID;
     }
 
-    public Drugs getDrugs() {
-        return drugs;
+    public Integer getDrugID() {
+        return drugID;
     }
 
-    public void setDrugs(Drugs drugs) {
-        this.drugs = drugs;
+    public void setDrugID(Integer drugID) {
+        this.drugID = drugID;
+    }
+
+    public String getDrugName() {
+        return drugName;
+    }
+
+    public void setDrugName(String drugName) {
+        this.drugName = drugName;
     }
 
     public String getMfDate() {

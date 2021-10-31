@@ -1,5 +1,6 @@
 package com.assignment.leePharmacy.pharmacyApplication.control;
 
+import com.assignment.leePharmacy.pharmacyApplication.dto.StockDrugDTO;
 import com.assignment.leePharmacy.pharmacyApplication.model.Stock;
 import com.assignment.leePharmacy.pharmacyApplication.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,10 @@ public class StockController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteStock/{id}")
     public void deleteStock(@PathVariable Integer id){
         stockService.deleteStock(id);
+    }
+
+    @GetMapping("/getAllStockDetails")
+    public List<StockDrugDTO> getAllStockDetails(){
+        return stockService.getAllDetailsOfStock();
     }
 }
