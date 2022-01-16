@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "stock")
-public class Stock {
+public class Stock implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +26,7 @@ public class Stock {
 
     @Column(name =  "rcvd_date", nullable = false)
     private String rcvdDate;
+
 
     public Integer getStockID() {
         return stockID;

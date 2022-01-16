@@ -22,6 +22,9 @@
     <script type="text/javascript"
             src="https://code.jquery.com/jquery-3.5.1.js">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="index.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
@@ -47,7 +50,7 @@
     <link rel="stylesheet" href="assets/css/demo_1/style.css">
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
-    <title>View Categories</title>
+    <title>Sales Interface</title>
 </head>
 <body>
 <div class="container-scroller">
@@ -97,7 +100,7 @@
             </ul>
             <form class="ml-auto search-form d-none d-md-block" action="#">
                 <div class="form-group">
-                    <input type="search" class="form-control" id="searchBar" onkeyup="tableSearch" placeholder="Search Here">
+                    <input type="search" class="form-control" id="searchBar" placeholder="Search Here">
                 </div>
             </form>
             <ul class="navbar-nav ml-auto">
@@ -193,7 +196,7 @@
                         <a class="dropdown-item">Messages<i class="dropdown-item-icon ti-comment-alt"></i></a>
                         <a class="dropdown-item">Activity<i class="dropdown-item-icon ti-location-arrow"></i></a>
                         <a class="dropdown-item">FAQ<i class="dropdown-item-icon ti-help-alt"></i></a>
-                        <a href="/logout" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+                        <a class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
                     </div>
                 </li>
             </ul>
@@ -209,13 +212,8 @@
             <ul class="nav">
                 <li class="nav-item nav-profile">
                     <a href="#" class="nav-link">
-                        <div class="profile-image">
-                            <img class="img-xs rounded-circle" src="assets/images/faces/face8.jpg" alt="profile image">
-                            <div class="dot-indicator bg-success"></div>
-                        </div>
                         <div class="text-wrapper">
-                            <p class="profile-name">Allen Moreno</p>
-                            <p class="designation">Premium user</p>
+                            <p class="profile-name" id="phName">[[${#httpServletRequest.remoteUser}]]&nbsp;&nbsp; </p>
                         </div>
                     </a>
                 </li>
@@ -302,32 +300,118 @@
         <div class="main-panel">
             <div class="content-wrapper">
                 <div class="container-fluid">
-                    <h1>Pharmacists List</h1>
-                    <div th:switch="${pharmacist}">
-                        <h2 th:case="null">No pharmacists available</h2>
-                        <div th:case="*" class="table-responsive">
-                            <table id="myTable" class="table table-success table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Pharmacist ID</th>
-                                    <th scope="col">Pharmacist Name</th>
-                                    <th scope="col">Pharmacist Username</th>
-                                    <th scope="col">Edit Pharmacist</th>
-                                    <th scope="col">Delete Pharmacist</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="pharmacist : ${pharmacist}">
-                                    <td th:text="${pharmacist.pID}"></td>
-                                    <td th:text="${pharmacist.pName}"></td>
-                                    <td th:text="${pharmacist.pEmail}"></td>
-                                    <td><a th:href="@{/showUpdatePharmacist/{id} (id=${pharmacist.pID})}"><i class="bi bi-pencil-square"></i></a></td>
-                                    <td><a th:href="@{/deletePharmacist/{id} (id=${pharmacist.pID})}"><i class="bi bi-trash-fill" style="color:red"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <h1>Sales</h1>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div th:switch="${stock}">
+                                    <h2 th:case="null">No brands available</h2>
+                                    <div th:case="*" class="table-responsive">
+                                        <table id="myTable" class="table table-success table-striped table-hover display">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Stock ID</th>
+                                                <th scope="col">Drug Name</th>
+                                                <th scope="col">Expire Date</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Add to Cart</th>
+                                                <!--                                    <th scope="col">Edit Brand</th>-->
+                                                <!--                                    <th scope="col">Delete Brand</th>-->
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="stock : ${stock}">
+                                                <td class="prod_id" th:text="${stock.stockID}"></td>
+                                                <td class="prod_name" th:text="${stock.drugName}"></td>
+                                                <td class="prod_expDate" th:text="${stock.expDate}"></td>
+                                                <td class="prod_price" th:text="${stock.price}"></td>
+                                                <td class="prod_qty" th:text="${stock.qty}"></td>
+                                                <td><i class="bi bi-cart-check-fill btn btn-success" name="cart" data-toggle="modal" data-target="#exampleModal"></i></td>
+                                                <!--                                    <td><a th:href="@{/deleteBrand/{id} (id=${brand.brandID})}"><i class="bi bi-trash-fill" style="color:red"></i></a></td>-->
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="false">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content"
+                                                     style="
+                                                                left: auto;
+                                                                right: -100%;
+                                                                width: 200x;
+                                                           "
+                                                >
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <form>
+                                                            <div class="form-group">
+                                                                <label  class="col-form-label">Available Quantity:</label>
+                                                                <input type="text" id="txt_prod_reQty" class="form-control" >
+                                                                <input type="hidden" id="txt_prod_id">
+                                                                <input type="hidden" id="txt_prod_name">
+                                                                <input type="hidden" id="txt_prod_price">
+                                                                <input type="hidden" id="txt_prod_qty">
+                                                            </div>
+
+
+
+                                                        </form>
+
+                                                    </div>
+                                                    <div class="modal-footer" >
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <a><button type="button" id="btn_save" class="btn btn-primary">Save changes</button></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button class="btn btn-success" onclick="location.href='/showAddBrandForm'" type="button">Add New Brand</button>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <table class="table table-striped" id="tbl_bill" style="display:none">
+                                    <thead>
+                                        <tr>
+                                            <th>ProdID</th>
+                                            <th>ProdName</th>
+                                            <th>ProdPrice</th>
+                                            <th>ProdQty</th>
+                                            <th>TotalPrice</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl_bill_body"></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" align="right">Grand Total</th>
+                                            <td colspan="2" id="txt_grand_total">0.00</td>
+                                            <td>
+                                                <input type="hidden" id="txt_p_qty">
+                                                <input type="hidden" id="txt_p_id">
+                                            </td>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+
+<!--                                <form th:object="${invoice}" method="post" th:action="@{/addNewInvoice}" class="form">-->
+<!--                                    <input type="hidden" th:field="*{invDate}" id="txt_inv_date" class="form-control">-->
+<!--                                    <input type="hidden" th:field="*{grdPrice}" id="txt_inv_grdPrice" class="form-control">-->
+<!--                                    <input type="hidden" th:field="*{pName}" id="txt_inv_pName" class="form-control">-->
+<!--                                    <button class="btn btn-primary" id="btnPay">PAY</button>-->
+<!--                                </form>-->
+                            </div>
                         </div>
-                        <button class="btn btn-success" onclick="location.href='/showAddPharmacistForm'" type="button">Add New Pharmacist</button>
                     </div>
                 </div>
             </div>
@@ -335,7 +419,7 @@
             <!-- partial:partials/_footer.html -->
             <footer class="footer">
                 <div class="container-fluid clearfix">
-                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © BMV 2020</span>
                     <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
                 </div>
             </footer>
@@ -354,40 +438,120 @@
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
+
+  $(".btn-success").click(function(){
+    var prod_id = $(this).parents("tr").find(".prod_id").html();
+    var prod_name = $(this).parents("tr").find(".prod_name").html();
+    var prod_price = $(this).parents("tr").find(".prod_price").html();
+    var prod_qty = $(this).parents("tr").find(".prod_qty").html();
+    $("#txt_prod_id").val(prod_id);
+    $("#txt_prod_name").val(prod_name);
+    $("#txt_prod_price").val(prod_price);
+    $("#txt_prod_qty").val(prod_qty);
+  });
+
+    $("#btn_save").click(function(){
+        var p_id = $("#txt_prod_id").val();
+        var p_name = $("#txt_prod_name").val();
+        var p_price = parseFloat($("#txt_prod_price").val());
+        var p_qty = parseInt($("#txt_prod_qty").val());
+        var p_reQty = parseInt($("#txt_prod_reQty").val());
+        var grand_total = parseFloat($("#txt_grand_total").html());
+        var p_old_qty = parseInt($("#txt_p_qty").html());
+
+
+        if(p_reQty>p_qty){
+            alert("Input a valid quantity");
+            return;
+        }
+        var total = p_price*p_reQty;
+        grand_total += total;
+        var p_remQty = p_qty - p_reQty;
+        var p_old_qty = p_qty;
+        var row = "<tr>";
+        row += "<td>"+p_id+"</td>";
+        row += "<td>"+p_name+"</td>";
+        row += "<td>"+p_price+"</td>";
+        row += "<td>"+p_reQty+"</td>";
+        row += "<td class='line_total'>"+total+"</td>";
+        row += "<td><a href='javascript:void(0)'><i class='bi bi-trash remove_item' style='color:red'></i></a></td>";
+        row += "</tr>";
+        $("#tbl_bill_body").append(row);
+        $("#txt_grand_total").html(grand_total);
+        $("#txt_p_qty").html(p_old_qty);
+        $("#txt_p_id").html(p_id);
+        $("#tbl_bill").css("display","block");
+
+        alert(p_old_qty);
+        $.ajax({
+          type: "PUT",
+          url: "/updateStockQty/"+p_id+"/"+p_remQty,
+          success:function(data){
+            alert(data);
+          }
+        });
+
+
+
+    });
+    $("#tbl_bill_body").on("click",".remove_item",function(){
+        var total = parseFloat($(this).parents("tr").find(".line_total").html());
+        var grand_total = parseFloat($("#txt_grand_total").html());
+        var p_qty = parseInt($("#txt_p_qty").html());
+        var p_id = parseInt($("#txt_p_id").html())
+        grand_total -= total;
+        $("#txt_grand_total").html(grand_total);
+       // alert(p_id);
+
+      //  $.ajax({
+       //   type: "PUT",
+       //   url: "/updateStockQty/"+p_id+"/"+p_qty,
+         // success:function(data){
+           // alert(data);
+          //}
+      //});
+
+        $(this).parents("tr").remove();
+
+
+
+    });
+
+    $("#btnPay").click(function(){
+        var grdTotal = parseFloat($("#txt_grand_total").html());
+        var pName = $("#phName").val();
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+
+        $("#txt_grand_total").val(grdTotal);
+        $("#txt_inv_date").val(today);
+        $("#txt_inv_pName").val(pName);
+    });
+
 });
+
 </script>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="assets/vendors/js/vendor.bundle.base.js"></script>
-    <script src="assets/vendors/js/vendor.bundle.addons.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="assets/js/shared/off-canvas.js"></script>
-    <script src="assets/js/shared/misc.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="assets/js/demo_1/dashboard.js"></script>
-    <!-- End custom js for this page-->
-    <script src="assets/js/shared/jquery.cookie.js" type="text/javascript"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="assets/vendors/js/vendor.bundle.base.js"></script>
+<script src="assets/vendors/js/vendor.bundle.addons.js"></script>
+<!-- endinject -->
+<!-- Plugin js for this page-->
+<!-- End plugin js for this page-->
+<!-- inject:js -->
+<script src="assets/js/shared/off-canvas.js"></script>
+<script src="assets/js/shared/misc.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page-->
+<script src="assets/js/demo_1/dashboard.js"></script>
+<!-- End custom js for this page-->
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 </html>

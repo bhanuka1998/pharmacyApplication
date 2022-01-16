@@ -38,4 +38,10 @@ public class DrugController {
     public List<DrugDTO> getAllByNames(){
         return drugService.getAllByNames();
     }
+
+    @GetMapping("/getDrugById/{id}")
+    public  Drugs getDrugById(@PathVariable Integer id){
+        return drugService.getByID(id);
+    }
+
 }

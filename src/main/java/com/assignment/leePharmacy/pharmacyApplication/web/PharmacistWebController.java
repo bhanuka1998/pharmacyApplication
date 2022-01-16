@@ -1,10 +1,9 @@
 package com.assignment.leePharmacy.pharmacyApplication.web;
 
 import com.assignment.leePharmacy.pharmacyApplication.model.Pharmacist;
+import com.assignment.leePharmacy.pharmacyApplication.model.PharmacistLogin;
 import com.assignment.leePharmacy.pharmacyApplication.service.PharmacistService;
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,9 +38,10 @@ public class PharmacistWebController {
 
     @PostMapping("/addNewPharmacist")
     public String addNewPharmacist(@Valid Pharmacist pharmacist, BindingResult result, Model model){
-        if(result.hasErrors()){
-            return  "addpharmacist";
+        if(result.hasErrors()) {
+            return "addpharmacist";
         }
+
         pharmacistService.savePharmacist(pharmacist);
         return "redirect:/viewPharmacist";
     }
@@ -68,4 +68,10 @@ public class PharmacistWebController {
         pharmacistService.deletePharmacist(id);
         return "redirect:/viewPharmacist";
     }
+
+    @GetMapping("/403")
+    public String errorPage403() {
+        return "403";
+    }
+
 }

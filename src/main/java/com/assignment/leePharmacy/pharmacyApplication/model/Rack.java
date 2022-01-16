@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "rack")
-public class Rack {
+public class Rack implements java.io.Serializable {
     @Id
     @Column(name = "rack_no")
     @GeneratedValue(strategy = GenerationType.AUTO)

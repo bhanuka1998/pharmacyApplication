@@ -12,6 +12,7 @@ public interface PharmacistService {
     List<Pharmacist> getAllPharmacists();
 
     Pharmacist getPharmacistByID(Integer id);
+
     Optional<Pharmacist> updatePharmacist(Integer id, Pharmacist pharmacist);
 
     void deletePharmacist(Integer id);

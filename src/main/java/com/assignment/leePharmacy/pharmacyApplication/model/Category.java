@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements java.io.Serializable {
 
     @Id
     @Column(name = "cat_id")

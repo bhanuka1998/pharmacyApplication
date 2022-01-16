@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "brand")
-public class Brand {
+public class Brand implements java.io.Serializable {
 
     @Id
     @Column(name = "brand_id")

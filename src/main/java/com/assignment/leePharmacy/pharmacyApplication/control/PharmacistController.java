@@ -31,4 +31,6 @@ public class PharmacistController {
     public void deleteStudent(@PathVariable Integer id){
         pharmacistService.deletePharmacist(id);
     }
+
+
 }

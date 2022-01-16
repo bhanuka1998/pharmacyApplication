@@ -1,8 +1,12 @@
 package com.assignment.leePharmacy.pharmacyApplication.service;
 
 import com.assignment.leePharmacy.pharmacyApplication.model.Pharmacist;
+import com.assignment.leePharmacy.pharmacyApplication.model.PharmacistLogin;
 import com.assignment.leePharmacy.pharmacyApplication.repository.PharmacistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,10 +17,20 @@ import java.util.Optional;
 @Service
 public class PharmacistServiceImpl implements PharmacistService{
     @Autowired
-    PharmacistRepository pharmacistRepository;
+    private PharmacistRepository pharmacistRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void savePharmacist(Pharmacist pharmacist) {
+
+        PharmacistLogin pharmacistLogin = new PharmacistLogin();
+        pharmacistLogin.setUserPassword(passwordEncoder.encode("123456"));
+        pharmacistLogin.setRole("ROLE_PHARMACIST");
+        pharmacistLogin.setUserEmail(pharmacist.getpEmail());
+        pharmacistLogin.setStatus(true);
+        pharmacist.setPharmacistLogin(pharmacistLogin);
         pharmacistRepository.save(pharmacist);
     }
 
@@ -40,7 +54,7 @@ public class PharmacistServiceImpl implements PharmacistService{
     public Optional<Pharmacist> updatePharmacist(Integer id, Pharmacist pharmacist) {
         return pharmacistRepository.findById(id).map(e->{
             e.setpName(pharmacist.getpName());
-            e.setpUName(pharmacist.getpUName());
+            e.setpEmail(pharmacist.getpEmail());
             return e;
         });
     }
@@ -49,4 +63,6 @@ public class PharmacistServiceImpl implements PharmacistService{
     public void deletePharmacist(Integer id) {
         pharmacistRepository.deleteById(id);
     }
+
+
 }

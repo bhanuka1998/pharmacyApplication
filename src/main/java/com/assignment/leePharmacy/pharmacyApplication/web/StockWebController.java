@@ -1,8 +1,10 @@
 package com.assignment.leePharmacy.pharmacyApplication.web;
 
 import com.assignment.leePharmacy.pharmacyApplication.model.Category;
+import com.assignment.leePharmacy.pharmacyApplication.model.Invoice;
 import com.assignment.leePharmacy.pharmacyApplication.model.Stock;
 import com.assignment.leePharmacy.pharmacyApplication.service.DrugService;
+import com.assignment.leePharmacy.pharmacyApplication.service.InvoiceService;
 import com.assignment.leePharmacy.pharmacyApplication.service.StockService;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class StockWebController {
 
     @Autowired
     private DrugService drugService;
+
+    @Autowired
+    private InvoiceService invoiceService;
 
     @GetMapping("/viewStock")
     public String viewStock(Stock stock, Model model){
@@ -67,6 +72,40 @@ public class StockWebController {
     public String deleteCategory(@PathVariable ("id") Integer id, Model model) {
         stockService.deleteStock(id);
         return "redirect:/viewCategories";
+    }
+
+    @GetMapping("/viewStockDetailsByDrug")
+    public String getAllDetailsOfStock(Model model, Stock stock){
+        //model.addAttribute("brand", brandService.getAllBrands());
+        model.addAttribute("stock", stockService.getAllDetailsOfStock());
+        return "sales";
+    }
+
+    @GetMapping("/GetStockQty/{id}")
+    public void getStockQty(Model model, @PathVariable("id") Integer id){
+        model.addAttribute("stocks", stockService.getStockByID(id));
+    }
+
+    @PostMapping("/updateStockQty/id")
+    public String updateStockQty(@PathVariable ("id") Integer id, @Valid Stock stock, BindingResult result, Model model){
+        if(result.hasErrors()){
+            stock.setStockID(id);
+            model.addAttribute("stock",stock);
+            return  "sales";
+        }
+        Optional<Stock> stock1 = stockService.reduceStockQty(id, stock.getQty());
+        return "redirect:/viewStockDetailsByDrug";
+    }
+
+    @PostMapping("/addNewInvoice")
+    public String addNewInvoice(@Valid Invoice invoice, BindingResult result, Model model){
+        //model.addAttribute("invoice", invoice);
+        if(result.hasErrors()){
+           // model.addAttribute("invoice", invoice);
+            return  "sales";
+        }
+        invoiceService.addInvoice(invoice);
+        return "redirect:/viewStockDetailsByDrug";
     }
 
 }

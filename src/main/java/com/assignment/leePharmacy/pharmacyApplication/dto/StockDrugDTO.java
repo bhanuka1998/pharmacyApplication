@@ -10,8 +10,13 @@ public class StockDrugDTO {
     private String expDate;
     private Integer qty;
     private String rcvdDate;
+    private Float price;
 
-    public StockDrugDTO(Integer stockID, Integer drugID, String drugName, String mfDate, String expDate, Integer qty, String rcvdDate) {
+    public StockDrugDTO(Integer qty) {
+        this.qty = qty;
+    }
+
+    public StockDrugDTO(Integer stockID, Integer drugID, String drugName, String mfDate, String expDate, Integer qty, String rcvdDate, Float price) {
         this.stockID = stockID;
         this.drugID = drugID;
         this.drugName = drugName;
@@ -19,6 +24,15 @@ public class StockDrugDTO {
         this.expDate = expDate;
         this.qty = qty;
         this.rcvdDate = rcvdDate;
+        this.price = price;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public Integer getStockID() {

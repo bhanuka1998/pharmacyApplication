@@ -29,6 +29,7 @@ public class StockServiceImpl implements StockService{
         return stockList;
     }
 
+
     @Override
     @Transactional
     public Optional<Stock> updateStock(Integer id, Stock stock) {
@@ -61,5 +62,14 @@ public class StockServiceImpl implements StockService{
         List<StockDrugDTO> stockList = new ArrayList<StockDrugDTO>();
         stockRepository.getAllStockDetails().forEach(stockList::add);
         return stockList;
+    }
+
+    @Override
+    @Transactional
+    public Optional<Stock> reduceStockQty(Integer id, int qty) {
+        return stockRepository.findById(id).map(e -> {
+            e.setQty(qty);
+            return e;
+        });
     }
 }

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 public class Pharmacist {
     @Id
     @Column(name = "pID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pID;
 
     @NotBlank(message = "Name cannot be empty")
@@ -19,10 +19,20 @@ public class Pharmacist {
     private String pName;
 
     @Column(name = "p_username", length = 50, nullable = false)
-    private String pUName;
+    private String pEmail;
 
-    @Column(name = "p_password", length = 100, nullable = false)
-    private String pPassword;
+    @OneToOne(targetEntity = PharmacistLogin.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pID", referencedColumnName = "user_log_id")
+    private PharmacistLogin pharmacistLogin;
+
+    public Pharmacist() {
+    }
+
+    public Pharmacist(@NotBlank(message = "Name cannot be empty") String pName, String pEmail, PharmacistLogin pharmacistLogin) {
+        this.pName = pName;
+        this.pEmail = pEmail;
+        this.pharmacistLogin = pharmacistLogin;
+    }
 
     public Integer getpID() {
         return pID;
@@ -40,19 +50,19 @@ public class Pharmacist {
         this.pName = pName;
     }
 
-    public String getpUName() {
-        return pUName;
+    public String getpEmail() {
+        return pEmail;
     }
 
-    public void setpUName(String pUName) {
-        this.pUName = pUName;
+    public void setpEmail(String pEmail) {
+        this.pEmail = pEmail;
     }
 
-    public String getpPassword() {
-        return pPassword;
+    public PharmacistLogin getPharmacistLogin() {
+        return pharmacistLogin;
     }
 
-    public void setpPassword(String pPassword) {
-        this.pPassword = pPassword;
+    public void setPharmacistLogin(PharmacistLogin pharmacistLogin) {
+        this.pharmacistLogin = pharmacistLogin;
     }
 }

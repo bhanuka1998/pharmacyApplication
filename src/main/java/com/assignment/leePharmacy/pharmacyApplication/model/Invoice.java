@@ -12,24 +12,14 @@ public class Invoice {
     private Integer invID;
 
     @Column(name = "date", nullable = false)
-    private Date invDate;
+    private String invDate;
 
     @Column(name = "grd_price", nullable = false)
     private Float grdPrice;
 
-    @Column(name = "balance", nullable = false)
-    private Float balance;
+    @Column(name = "p_name", nullable = false)
+    private String pName;
 
-    @Column(name = "pID", nullable = false)
-    private Integer pID;
-
-    public Integer getpID() {
-        return pID;
-    }
-
-    public void setpID(Integer pID) {
-        this.pID = pID;
-    }
 
     public Integer getInvID() {
         return invID;
@@ -39,11 +29,11 @@ public class Invoice {
         this.invID = invID;
     }
 
-    public Date getInvDate() {
+    public String getInvDate() {
         return invDate;
     }
 
-    public void setInvDate(Date invDate) {
+    public void setInvDate(String invDate) {
         this.invDate = invDate;
     }
 
@@ -55,11 +45,11 @@ public class Invoice {
         this.grdPrice = grdPrice;
     }
 
-    public Float getBalance() {
-        return balance;
+    public String getpName() {
+        return pName;
     }
 
-    public void setBalance(Float balance) {
-        this.balance = balance;
+    public void setpName(String pName) {
+        this.pName = pName;
     }
 }

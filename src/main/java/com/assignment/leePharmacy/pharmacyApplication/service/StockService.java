@@ -20,4 +20,7 @@ public interface StockService {
     void deleteStock(Integer id);
 
     List<StockDrugDTO> getAllDetailsOfStock();
+
+    Optional<Stock> reduceStockQty(Integer id, int qty);
+
 }
